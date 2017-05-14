@@ -7,7 +7,7 @@
  * Semaphore control
 * Disk booting
 * BIOS development
- * Building I/O operations from BIOS putchar
+ * Building our own I/O operations from BIOS putchar
 * Basic operating system environment
   * File I/O
   * USB I/O
