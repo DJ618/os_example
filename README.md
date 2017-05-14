@@ -8,11 +8,16 @@
 * Disk booting
 * BIOS development
  * Building our own I/O operations from BIOS putchar
+* Kernel development
+  * Process control
+  * Kernel/User space register control
+  * CPU tick-rate emulation for process control
 * Basic operating system environment
   * File I/O
   * USB I/O
   * Keyboard I/O
   * Video I/O
+  * Serial port I/O
 * User management
   * User login
   * User shell
