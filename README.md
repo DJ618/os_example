@@ -12,12 +12,21 @@
   * Process control
   * Kernel/User space register control
   * CPU tick-rate emulation for process control
+  * User syscalls
 * Basic operating system environment
   * File I/O
   * USB I/O
   * Keyboard I/O
   * Video I/O
   * Serial port I/O
+    * Stream management
+  * Thread control
 * User management
   * User login
   * User shell
+    * Grep
+    * Cat
+    * Login
+    * More
+    * Pipe
+    * Link / Symlink

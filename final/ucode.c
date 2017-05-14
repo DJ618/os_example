@@ -41,7 +41,6 @@ int tswitch()
   return syscall(6,0,0);
 }
 
-
 int fork()
 {
    return syscall(10, 0, 0);
@@ -67,9 +66,6 @@ int thread(int fn, int stack, int flag, int ptr)
   return syscall(14, fn, stack, flag, ptr);
 }
 
-// 15-19: mutex for threads
-
-
 int mutex_creat()
 {
   return syscall(15, 0,0);
@@ -89,7 +85,6 @@ int mutex_destroy(int *m)
 {
   return syscall(18, m, 0);
 }
-
 
 int mkdir(char *name)
 {
@@ -116,7 +111,6 @@ int unlink(char *file)
   return syscall(24, file, 0);
 }
 
-
 int symlink(char *oldfile, char *newfile)
 {
   return syscall(25, oldfile, newfile);
@@ -138,7 +132,7 @@ int getcwd(char *cwdname)
 }
 
 int stat(char *filename, struct stat *sPtr)
-{   
+{
    return syscall(29, filename, sPtr);
 }
 
@@ -146,8 +140,6 @@ int fstat(int fd, struct stat *sptr)
 {
   return syscall(30,fd,sptr,0);
 }
-
-
 
 int open(char *file, int flag)
 {
@@ -179,8 +171,6 @@ int pipe(int *pd)
     return syscall(36, pd, 0);
 }
 
-
-
 int chmod(char *file, u16 mode)
 {
    return syscall(37, file, mode);
@@ -211,7 +201,6 @@ int gettty(char *tty)
    return syscall(41, tty, 0);
 }
 
-
 int dup(int fd)
 {
    return syscall(42, fd, 0);
@@ -237,7 +226,6 @@ int umount(char *dev)
   return syscall(46, dev);
 }
 
-/********** CDROM syscalls ******************/
 int getSector(u32 sector, char *ubuf, u16 nsector)
 {
   return syscall(47, (u32)sector, ubuf, nsector);
@@ -247,7 +235,6 @@ int do_cmd(u16 cmd, u16 value)
 {
   return syscall(48, cmd, value);
 }
-
 
 int kill(int sig, int pid)
 {
@@ -279,7 +266,6 @@ int recv(char *msg)
   syscall(55,msg, 0);
 }
 
-
 int do_texit()
 {
   int pid = getpid();
@@ -301,7 +287,6 @@ int khits(int *requests, int *hits)
 {
   syscall(58,requests,hits);
 }
-
 
 int setcolor(int color)
 {
@@ -329,4 +314,3 @@ int pwd()
   getcwd(cwd);
   printf("%s\n", cwd);
 }
-

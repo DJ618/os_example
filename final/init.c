@@ -1,29 +1,18 @@
-//*************************************************************************
-//                      Logic of init.c
-// NOTE: this init.c creates only ONE login process on console=/dev/tty0
-// YOUR init.c must also create login processes on serial ports /dev/ttyS0
-// and /dev/ttyS1..
-//************************************************************************
-
 int pid, console, ser1, ser2, status;
 int stdin, stdout;
 
-#include "ucode.c"  //<========== AS POSTED on class website
+#include "ucode.c"
 
 main(int argc, char *argv[])
 {
   //close the normal FD's
   close(0); close(1);
 
-  //1. // open /dev/tty0 as 0 (READ) and 1 (WRTIE) in order to display messages
+  // open /dev/tty0 as 0 (READ) and 1 (WRTIE) in order to display messages
   stdin = open("/dev/tty0", O_RDONLY);
   stdout = open("/dev/tty0", O_WRONLY);
-  // TODO: works without these lines but i'm not sure why
-  // dup2(stdin, 0);
-  // dup2(stdout, 1);
 
-
-  //2. // Now we can use printf, which calls putc(), which writes to stdout
+  // Now we can use printf, which calls putc(), which writes to stdout
   printf("INIT : fork a login task on console\n");
   console = fork();
   //if fork returns 0 we are the child. start login

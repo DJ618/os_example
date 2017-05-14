@@ -12,7 +12,6 @@
 int numtokens, i;
 char *cmdtokens[16], tokens[16][32];
 
-
 int tokenize(char *source, char *delimiter)
 {
   char str_buff[64];
@@ -30,7 +29,6 @@ int tokenize(char *source, char *delimiter)
   token = strtok(str_buff, delimiter);
   while(token)
   {
-    //printf("token (%d) = %s\n", i, token );
     //copy and save pointer
     strcpy(&(tokens[i][0]), token);
     cmdtokens[i] = &(tokens[i][0]);
@@ -39,22 +37,17 @@ int tokenize(char *source, char *delimiter)
     token = strtok(0, delimiter);
   }
   //null term the next string
-  //TODO: test to see whats up
   tokens[i][0] = 0;
-  //printf("total = %d", total);
   return total;
 }
 
 int scan(char *line, char target)
 {
   int pos = 0, length = 0;
-
   //start from endof string
   length = strlen(line);
-  //printf("len = %d, line = %s\n", length, line);
   while(length > 0)
   {
-    //printf("compare %c to %c\n", line[length], target);
     //search for target char
     if(line[length] == target)
     {
@@ -70,7 +63,6 @@ int split(char *source, char *head, char *tail, int pos)
   char *sp = source;
   int headindex, tailindex, len, i = 0;
 
-
   len = strlen(source);
   tailindex = pos+1;
   headindex = pos-1;
@@ -80,13 +72,10 @@ int split(char *source, char *head, char *tail, int pos)
     return -1;
   }
 
-  //printf("pos = %d, len = %d, source = %s\n", pos, len, source);
-
   //consume whitespace around split pos
   while(source[tailindex] && source[tailindex] == ' '){ tailindex++; }
   while(source[headindex] && source[headindex] == ' '){ headindex--; }
 
-  //printf("headindex = %d, tailindex = %d\n", headindex, tailindex);
   //copy tail to tail
   while(tailindex != len)
   {
@@ -103,7 +92,6 @@ int split(char *source, char *head, char *tail, int pos)
   *head = 0;
 }
 
-
 int do_command(char *cmd)
 {
   char head[24], tail[24];
@@ -112,13 +100,9 @@ int do_command(char *cmd)
   redirectout = scan(cmd, '>');
   redirectin = scan(cmd, '<');
 
-  // printf("redirectout = %d\n", redirectout);
-  // printf("redirectin = %d\n", redirectin);
-
   //REDIRECT INPUT FROM FILE
   if(redirectin)
   {
-    //printf("redirecting input");
     split(cmd, head, tail, redirectin);
     close(0);
     if(open(tail, O_RDONLY) < 0)
@@ -130,14 +114,12 @@ int do_command(char *cmd)
   //REDIRECT OUTPUT TO FILE
   if(redirectout)
   {
-      //printf("redirecting output, HEAD: %s, tail: %s", head, tail);
     split(cmd, head, tail, redirectout);
     //check for appending
     if(redirectout = scan(head, '>'))
     {
       //null the arrow
       head[redirectout] = 0;
-      //printf("appending output, HEAD: %s, tail: %s", head, tail);
       close(1);
       if(open(tail, O_WRONLY | O_APPEND) < 0)
       {
@@ -155,20 +137,15 @@ int do_command(char *cmd)
   }
   //NO OUTPUT REDIRECTION, JUST EXEC
   exec(cmd);
-
 }
-
-
 
 int do_pipe( char *cmdline, int *pip)
 {
   int haspipe = 0;
   char head[24], tail[24];
   int lpd[2], pid;
-  //HANDLE PIPE REDIRECTION, WE WRITE TO PIPE
   if (pip)
   {
-    //printf("do_pipe redirecting to pipe\n");
     close(pip[0]);
     dup2(pip[1], 1);
     close(pip[1]); //this is no good isnt it?
@@ -180,8 +157,6 @@ int do_pipe( char *cmdline, int *pip)
 
   if(haspipe)
   {
-    // printf("head = %s\n", head);
-    // printf("tail = %s\n", tail);
     if(pipe(lpd) < 0){ printf("could not open pipe!\n"); }
 
     pid = fork();
@@ -205,14 +180,12 @@ int do_pipe( char *cmdline, int *pip)
   }
 }
 
-
 int main(int argc, char *argv[])
 {
   char cmd_line[64], tty[16];
   int pid, status = 0;
   //NEVER DIE
   while(1){
-
     //PRINT LINE AND GET INPUT
     gettty(tty);
     memset(cmd_line, 0, 64);
@@ -222,10 +195,6 @@ int main(int argc, char *argv[])
       gets(cmd_line);
     }
     numtokens = tokenize(cmd_line, " ");
-    // for (i = 0; i < numtokens; i++) {
-    //   printf("tokens[%d] = %s\n", i, cmdtokens[i]);
-    // }
-
     //HANDLE BUILT IN COMMANDS
     if(!strcmp(tokens[0], "cd"))
     {
@@ -235,7 +204,6 @@ int main(int argc, char *argv[])
     {
       exit(1);
     }
-
 
     //SETUP CHILD PROC
     pid = fork();

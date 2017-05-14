@@ -6,9 +6,6 @@
 char buf[1024];
 char *bp;
 
-
-//TODO: getty and open that to read user interactions from for more
-
 int main(int argc, char *argv[])
 {
   char ch, tty[16];
@@ -19,9 +16,6 @@ int main(int argc, char *argv[])
   //do we have a file?
   if(argc == 2)
   {
-    //printf("argc: %d, file: %s\n", argc, argv[1]);
-    //redirect our input from the file
-    //close(0);
     fd = open(argv[1], O_RDONLY);
     nbytes = 1024;
     if(fd < 0)
@@ -44,7 +38,6 @@ int main(int argc, char *argv[])
     //reset
     memset(buf, 0, 1024);
     i = 0;
-    //printf("reading from fd %d ", fd);
     //read from input
     n = read(fd, buf, nbytes);
     //printf("read %d bytes\n", n);
@@ -56,7 +49,6 @@ int main(int argc, char *argv[])
       }//while we havent seen newline
       //we need more DATA
       if(n == i){continue;}
-      //printf("Found newline\n");
       //print the newline
       printf("%c", buf[i]);
       // print return char just in case
@@ -65,14 +57,10 @@ int main(int argc, char *argv[])
         printf("\r");
       }
       //inc lines on screen
-      //printf("numprinted %d, i = %d, n = %d\n", numprinted, i, n);
       numprinted++; i++;
       //if we've filled the screen wait for key
       if(numprinted >= SCREENHEIGHT)
       {
-        //printf("numprinted == %d\n", SCREENHEIGHT);
-        //key should be space or enter
-
         read(ttyfd, &ch, 1);
         if(ch == '\r')
         {
@@ -85,7 +73,6 @@ int main(int argc, char *argv[])
       }
     } // while over current buffer
   } // while we have read data
-
   close(ttyfd);
   close(fd);
 }
